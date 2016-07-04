@@ -16,10 +16,10 @@ public class Enemy extends MovableEntity {
 	private long ghostTimer;
 	private int fade;
 	// Chase variables s
-	protected boolean chase = false;
+	//protected boolean chase = false;
 	//private char chaseAxis;
-	protected double targetLocation;
-	protected boolean targetReached;
+	//protected double targetLocation;
+	//protected boolean targetReached;
 	protected boolean chaseVehicle = false;
 	protected int targetVehicle;
 	// type 1
@@ -38,7 +38,7 @@ public class Enemy extends MovableEntity {
 
 	/*************************************************** Enemy Constructors below ************************************************/
 	// initial enemy constructors (wave enemies)
-	public Enemy(/*int type,*/ int rank) {
+	public Enemy(int rank) {
 		this(1,rank);
 	}
 	protected Enemy(int type, int rank) {
@@ -188,12 +188,6 @@ public class Enemy extends MovableEntity {
 	/************************************************************* Functions are bellow ************************************************************/
 
 	/*-------------------------------------- Getters and Setters -------------------------------*/
-
-	// getters
-	/*public int getType() {
-		return type;
-	}*/
-
 	public int getRank() {
 		return rank;
 	}
@@ -202,182 +196,20 @@ public class Enemy extends MovableEntity {
 		return ghost;
 	}
 
-	/*public boolean getChase() {
-		return chase;
-	}*/
-
 	public int getFade() {
 		return fade;
 	}
 
-	// this method is used to get the actual test speed
-	public double getChaseSpeed(double px, double py, double xpos, double ypos) {
-
-		double edx = px - xpos;
-		double edy = py - ypos;
-		double dist = Math.sqrt(edx * edx + edy * edy);
-		if (dist >= 150)
-			return 0;
-		else
-			return maxChaseSpeed;
-	}
-
+	
 	// TODO what the heck is this?
-	public void grow(int num) {
+	/*public void grow(int num) {
 		radius += num;
 		health += num;
-	}
-
-	/*public void checkSelfDestruct() {
-
-		double dist = getDistanceFromPlayer(GamePanel.player.getx(),
-				GamePanel.player.gety());
-
-		if (dist <= 100 && rank == 3 && type == 2
-				&& !GamePanel.player.isDriving() && GamePanel.player.isVisible()
-				&& !GamePanel.player.isDead()){
-			explode();
-
-		}else if (dist <= 50 && rank == 2 && type == 2
-				&& !GamePanel.player.isDriving() && GamePanel.player.isVisible()
-				&& !GamePanel.player.isDead()){
-			explode();
-		}else if (dist <= 5 && rank == 1 && type == 2
-				&& !GamePanel.player.isDriving() && GamePanel.player.isVisible()
-				&& !GamePanel.player.isDead()){
-			explode();
-		}
-
 	}*/
 
-	// this method is used to see if the poublelayer is within the enmeies chase
-	// radius
-	public double getDistanceFromPlayer(double px, double py) {
-
-		double edx = px - getx();
-		double edy = py - gety();
-		double dist = Math.sqrt(edx * edx + edy * edy);
-
-		return dist;
-
-	}
-
-	public double getChaseAngle(int px, int py) {
-
-		double edx = px - getx();
-		double edy = py - gety();
-		double angle = Math.tanh(edy / edx);
-		return angle;
-
-	}
-
-	public double getClosestVehicle() {
-		double min = 0;
-
-		for (int i = 0; i < GamePanel.entities.get("Vehicle").size(); i++) {
-
-			double edx = GamePanel.entities.get("Vehicle").get(i).getx() - getx();
-			double edy = GamePanel.entities.get("Vehicle").get(i).gety() - gety();
-
-			double dist = Math.sqrt(edx * edx + edy * edy);
-			if (i == 0)
-				min = dist;
-			if (dist < min)
-				min = dist;
-
-		}
-
-		return min;
-
-	}
-
-	public int findTargetVehicle(double distance) {
-
-		for (int i = 0; i < GamePanel.entities.get("Vehicle").size(); i++) {
-
-			double edx = GamePanel.entities.get("Vehicle").get(i).getx() - getx();
-			double edy = GamePanel.entities.get("Vehicle").get(i).gety() - gety();
-
-			double dist = Math.sqrt(edx * edx + edy * edy);
-			if (dist == distance)
-				return i;
-
-		}
-
-		return -15;
-
-	}
-
-	public boolean validTarget(int number) {
-		if (number >= 0)
-			return true;
-		else
-			return false;
-	}
 
 	public void setRad(double newRad) {
 		rad = newRad;
-	}
-
-	/*public void setChaseVehicle(boolean chase) {
-
-		chaseVehicle = chase;
-		if (chase)
-			this.chase = false;
-
-	}*/
-
-	/*public void setChase(boolean chase, char input) {
-		this.chase = chase;
-		this.chaseAxis = input;
-		if (this.chase)
-			chaseVehicle = false;
-	}
-
-	public void setChase(boolean chase) {
-		this.chase = chase;
-
-		double random = Math.random();
-
-		if (random >= .5)
-			chaseAxis = 'x';
-		else
-			chaseAxis = 'y';
-
-	}*/
-
-	/*----------- Other Functions ----------------------------------------*/
-	// Chase logic functions ..........................................
-	/*public int getChaseAxis() {
-		return chaseAxis;
-	}
-
-	public void setChaseAxis(char axis) {
-		chaseAxis = axis;
-	}*/
-
-	public void setTargetLocation(double PlayerLocation) {
-		targetLocation = PlayerLocation;
-	}
-
-	public void setReached(boolean reached) {
-		targetReached = reached;
-	}
-
-	public boolean inSight(double xpos, double ypos, double xlocation,
-			double ylocation, char axis) {
-		if (axis == 'x') {
-			if (ypos >= ylocation - 5 && ypos <= ylocation + 5)
-				return true;
-			else
-				return false;
-		} else {
-			if (xpos >= xlocation - 5 && xpos <= xlocation + 5)
-				return true;
-			else
-				return false;
-		}
-
 	}
 
 	public boolean isTrapping() {
@@ -434,7 +266,6 @@ public class Enemy extends MovableEntity {
 		else if (randomDrop < .1)
 			GamePanel.entities.get("PowerUp").add(new PowerUp(PowerType.POWER, x, y));
 		
-		//this.explode(this);
 		GamePanel.entities.get("Explosion").add(new Explosion(x, y, radius, radius+15));
 
 		GamePanel.player.addScore(type+ rank);
@@ -495,13 +326,11 @@ public class Enemy extends MovableEntity {
 		int xlocation = (int) GamePanel.player.x;
 		int ylocation = (int) GamePanel.player.y;		
 		
-		if(slow && !chase){
+		if(slow){
 			x += dx * .3;
-			y += dy * .3;
-			
-			
+			y += dy * .3;			
 		}
-		if(!chase && !slow)
+		if(!slow)
 		{
 			
 			//updates position 
@@ -511,289 +340,9 @@ public class Enemy extends MovableEntity {
 		
 if(!GamePanel.player.isDead()){
 		//looking for player
-		/*if((type == 2 && !chase && !chaseVehicle && GamePanel.player.isVisible()) || type == 3)
-		{
-			int xpos = (int) this.getx();
-			int ypos = (int) this.gety();
-			
-			double dist = getDistanceFromPlayer(xlocation, ylocation);
-			double distv = getClosestVehicle();
-			targetVehicle = findTargetVehicle(distv);
-			if(distv < 150 && !GamePanel.player.isDriving() && validTarget(targetVehicle) && !((Vehicle)GamePanel.entities.get("Vehicle").get(targetVehicle)).isFree() && type != 3){
-				setChaseVehicle(true);
-			}
-			if(dist < 150 && !GamePanel.player.isDriving())setChase(true);
-			
-			
-			
-			if( ypos >= ylocation-5 && ypos <= ylocation+5 && !chaseVehicle && type != 3)
-			{
-				
-				double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-				
-				if(chaseSpeed == 0 || GamePanel.player.isDriving())setChase(false);
-				else 
-				{
-					setChase(true, 'x');
-					
-					if (xlocation > xpos)
-					{
-						if (slow)x+= chaseSpeed*.3;
-						else x+= chaseSpeed;
-					}
-					
-					if (xlocation < xpos)
-					{
-						if(slow)x-= chaseSpeed*.3;
-						else x-= chaseSpeed;
-					}
-					
-				}
-				
-				
-			}
-			
-			if( xpos >= xlocation-5 && xpos <= xlocation+5 && !chaseVehicle && type != 3 )
-			{
-				double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-				if(chaseSpeed == 0 || GamePanel.player.isDriving())setChase(false);
-				else
-				{
-					setChase(true, 'y');
-				
-					
-					if (ylocation > ypos)
-					{
-						if(slow)y+= chaseSpeed*.3;
-						else y+= chaseSpeed;
-					}
-					if (ylocation < ypos)
-					{
-						if(slow)y-= chaseSpeed;
-						else y-= chaseSpeed;
-					}
-				}
-				
-			
-			}	
-		}*/
-		
+	
 		
 		//Chasing Algorithim
-		/*if(chase && type == 2)
-		{
-			
-			
-			int xpos = (int) this.getx();
-			int ypos = (int) this.gety();
-			
-			
-			if(inSight(xpos, ypos, xlocation, ylocation, chaseAxis))
-			{
-				if (chaseAxis == 'x')
-				{
-					//double chaseSpeed = getChaseSpeed(xlocation,ylocation);
-					
-					double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-					
-					if(chaseSpeed == 0)
-					{
-						setChase(false);
-						
-						double angle = Math.random()*140 + 20;
-						rad = Math.toRadians(angle);
-						
-						if(slow){
-							dx = Math.cos(rad)*speed*.3;
-							dy = Math.sin(rad)*speed*.3;
-						}
-						else {
-							dx = Math.cos(rad)*speed;
-							dy = Math.sin(rad)*speed;
-						}
-					}
-					
-					 if (xlocation > xpos)
-					{
-						if(slow)x+= chaseSpeed*.3;
-						else x+= chaseSpeed;
-					}
-					
-					 if (xlocation < xpos)
-					{
-						if(slow)x-= chaseSpeed*.3;
-						else x-= chaseSpeed;
-					}
-					
-				}
-				else if(chaseAxis == 'y')
-				{
-					//double chaseSpeed = getChaseSpeed(xlocation, ylocation);
-					
-					double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-					
-					if(chaseSpeed == 0)
-					{
-						setChase(false);
-						double angle = Math.random()*140 + 20;
-						rad = Math.toRadians(angle);
-						
-						if(slow){
-							dx = Math.cos(rad)*speed*.3;
-							dy = Math.sin(rad)*speed*.3;
-						}
-						else{
-							dx = Math.cos(rad)*speed;
-							dy = Math.sin(rad)*speed;
-							
-						}
-					
-						
-					}
-					
-					
-					if (ylocation > ypos)
-					{
-						if(slow) y+=chaseSpeed*.3;
-						else y+= chaseSpeed;
-					}
-					
-					if (ylocation < ypos)
-					{
-						if(slow) y-= chaseSpeed*.3;
-						else y-= chaseSpeed;
-					}
-					
-					
-				}
-				
-				
-				
-			}
-			else
-			{
-				if (chaseAxis == 'x')
-				{
-					setTargetLocation(xlocation);
-					setReached(false);
-					
-					
-				}
-				
-			if (chaseAxis == 'y')
-				{
-					setTargetLocation(ylocation);
-					setReached(false);
-					
-					
-				}
-				
-				
-				
-				if(!targetReached)
-				{
-					if(chaseAxis == 'x')
-					{
-						//double chaseSpeed = getChaseSpeed(xlocation,ylocation);
-						
-						double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-						
-						if(chaseSpeed == 0)
-						{
-							setChase(false);
-							
-							double angle = Math.random()*140 + 20;
-							rad = Math.toRadians(angle);
-							
-							if(slow){
-								dx = Math.cos(rad)*speed*.3;
-								dy = Math.sin(rad)*speed*.3;
-							}
-							else {
-								dx = Math.cos(rad)*speed;
-								dy = Math.sin(rad)*speed;
-							}
-							
-							
-						}
-						
-						if (targetLocation > xpos)
-						{
-							
-							if(slow)x+= chaseSpeed*.3;
-							else x+= chaseSpeed;
-						}
-						
-						if (targetLocation < xpos)
-						{
-							if(slow)x-= chaseSpeed*.3;
-							else x-= chaseSpeed;
-						}
-						xpos = (int) getx();
-						
-						if( xpos >= targetLocation-5 && xpos <= targetLocation+5 )
-						{
-							setReached(true);
-							setChaseAxis('y');
-							
-						}
-						
-					}
-					else if (chaseAxis == 'y')
-					{
-						//double chaseSpeed = getChaseSpeed(xlocation, ylocation);
-						
-						
-						double chaseSpeed = getChaseSpeed(xlocation,ylocation,xpos,ypos);
-						
-						if(chaseSpeed == 0)
-						{
-							setChase(false);
-							
-							double angle = Math.random()*140 + 20;
-							rad = Math.toRadians(angle);
-							if(slow){
-								dx = Math.cos(rad)*speed*.3;
-								dy = Math.sin(rad)*speed*.3;
-							}
-							else 
-							{
-								dx = Math.cos(rad)*speed;
-								dy = Math.sin(rad)*speed;
-							}
-							
-						}
-						 
-						
-						
-						if (targetLocation > ypos)
-						{
-							if(slow)y+= chaseSpeed*.3; 
-							else y+= chaseSpeed;
-						}
-						
-						if (targetLocation < ypos)
-						{
-							if(slow) y-= chaseSpeed*.3;
-							else y-= chaseSpeed;
-						}
-						
-						ypos = (int) gety();
-						
-						if( ypos >= targetLocation-5 && ypos <= targetLocation+5 )
-						{
-							setReached(true);
-							setChaseAxis('x');
-							
-						}
-						
-					}
-				}
-				
-				
-			}
-			
-		}*/
 	
 }	
 		//chase Algorithim for vehicle 
@@ -909,15 +458,6 @@ if(!GamePanel.player.isDead()){
 		
 		//keeps enemy on screen
 		checkBounds();
-		/*if(x < radius && dx < 0 && type != 3) //left boundary
-		{dx =-dx;}
-		if(y < radius && dy < 0 && type !=3) //top of the screen 
-		{dy = -dy;}
-		if(x > GamePanel.WIDTH* GamePanel.SCALE - radius && dx >0 && type != 3)//right boundary
-		{dx = -dx;}
-		if( y > GamePanel.HEIGHT*GamePanel.SCALE -radius  && dy >0 && type !=3 )//bottom boundary
-		{dy =-dy;}*/
-		
 		
 		//enemy hit update
 		if(hit)

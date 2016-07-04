@@ -10,6 +10,9 @@ public class ChaseEnemy extends Enemy {
 	//private static Color color = new Color(255, 0, 0, 128);
 	//private double maxChaseSpeed;
 	//private boolean chase = false;
+	protected double targetLocation;
+	protected boolean targetReached;
+	protected boolean chase = false;
 	private char chaseAxis;	
 	
 	ChaseEnemy(int rank, double xlocation, double ylocation){
@@ -440,5 +443,98 @@ public class ChaseEnemy extends Enemy {
 		e.y += dy;
 		GamePanel.entities.get("Enemy").add(e);
 	}	
+	
+	public double getChaseSpeed(double px, double py, double xpos, double ypos) {
+
+		double edx = px - xpos;
+		double edy = py - ypos;
+		double dist = Math.sqrt(edx * edx + edy * edy);
+		if (dist >= 150)
+			return 0;
+		else
+			return maxChaseSpeed;
+	}
+	
+	public boolean inSight(double xpos, double ypos, double xlocation,
+			double ylocation, char axis) {
+		if (axis == 'x') {
+			if (ypos >= ylocation - 5 && ypos <= ylocation + 5)
+				return true;
+			else
+				return false;
+		} else {
+			if (xpos >= xlocation - 5 && xpos <= xlocation + 5)
+				return true;
+			else
+				return false;
+		}
+
+	}
+	
+	public void setTargetLocation(double PlayerLocation) {
+		targetLocation = PlayerLocation;
+	}
+
+	public void setReached(boolean reached) {
+		targetReached = reached;
+	}
+	public double getDistanceFromPlayer(double px, double py) {
+
+		double edx = px - getx();
+		double edy = py - gety();
+		double dist = Math.sqrt(edx * edx + edy * edy);
+
+		return dist;
+
+	}
+	public double getChaseAngle(int px, int py) {
+
+		double edx = px - getx();
+		double edy = py - gety();
+		double angle = Math.tanh(edy / edx);
+		return angle;
+
+	}
+	public double getClosestVehicle() {
+		double min = 0;
+
+		for (int i = 0; i < GamePanel.entities.get("Vehicle").size(); i++) {
+
+			double edx = GamePanel.entities.get("Vehicle").get(i).getx() - getx();
+			double edy = GamePanel.entities.get("Vehicle").get(i).gety() - gety();
+
+			double dist = Math.sqrt(edx * edx + edy * edy);
+			if (i == 0)
+				min = dist;
+			if (dist < min)
+				min = dist;
+
+		}
+
+		return min;
+
+	}
+	public int findTargetVehicle(double distance) {
+
+		for (int i = 0; i < GamePanel.entities.get("Vehicle").size(); i++) {
+
+			double edx = GamePanel.entities.get("Vehicle").get(i).getx() - getx();
+			double edy = GamePanel.entities.get("Vehicle").get(i).gety() - gety();
+
+			double dist = Math.sqrt(edx * edx + edy * edy);
+			if (dist == distance)
+				return i;
+
+		}
+
+		return -15;
+
+	}
+	public boolean validTarget(int number) {
+		if (number >= 0)
+			return true;
+		else
+			return false;
+	}
 	
 }
